@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <script src="lib/axios.js"></script>
+</head>
+
+<body>
+    <!-- 修改1-03-03 -->
+    <div id="box">
+        <button @click="handleAjax">ajax-axios</button>
+        <ul>
+            <li v-for="data in datalist" :key="data.id">
+                <img :src="data.img | imgFliter" alt="">
+                {{data.nm}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        Vue.filter("imgFliter", (url) => {
+            return url.replace("w.h", "") + "@1l_1e_1c_128w_180h"
+        })
+        new Vue({
+            el: "#box",
+            data: {
+                datalist: ""
+            },
+            methods: {
+                handleAjax() {
+                    axios.get("./json/maoyan.json").then(res => {
+                        console.log(res.data.movieList)
+                        this.datalist = res.data.movieList
+                    })
+                },
+
+
+            }
+        }
+        )
+
+        //"http://p0.meituan.net/w.h/movie/e2ecb7beb8dadc9f07f2fad9820459f92275588.jpg"
+
+        //https://p0.meituan.net/movie/e2ecb7beb8dadc9f07f2fad9820459f92275588.jpg@1l_1e_1c_128w_180h
+    </script>
+</body>
+
+</html>

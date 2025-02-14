@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        .tao-enter-active {
+            animation: aaa 1.5s;
+        }
+
+        .tao-leave-active {
+            animation: aaa 1.5s reverse;
+        }
+
+        /* 关键帧 */
+        @keyframes aaa {
+            0% {
+                opacity: 0;
+                /*不透明的*/
+                transform: translateX(100px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0px)
+            }
+        }
+
+        /*animation动画 opacity不透明的 transform变形 */
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <button @click="isShow=!isShow">change</button>
+        <!-- 写法1 -->
+        <transition enter-active-class="tao-enter-active" leave-active-class="tao-leave-active">
+            <div v-show="isShow">taosu111</div>
+        </transition>
+        <!-- 写法2，简写 -->
+        <transition name="tao" appear>
+            <div v-show="isShow">taosu2222</div>
+        </transition>
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                isShow: true,
+            }
+        })
+
+        //初始页面就有动画，加appear（出现）属性即可
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        .item {
+            overflow: hidden;
+            width: 300px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        .item img {
+            width: 100px;
+            float: left;
+        }
+
+        .itemInfo {
+            position: fixed;
+            width: 300px;
+            min-height: 200px;
+            top: 100px;
+            right: 50px;
+            background-color: pink;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <button @click="handleAjax">ajax</button>
+        <film-item v-for="item in datalist" :key="item.filmId" :mydata="item" @event="handleEvent"></film-item>
+        <film-detail :myfilmdata="filmdata"></film-detail>
+    </div>
+    <script>
+        //注意：html里标签用-的话<film-item>，js里就要用驼峰filmItem
+        Vue.component("filmItem", {
+            props: ["mydata"],
+            template: `
+            <div class="item">
+                <img :src="mydata.poster">
+                {{mydata.name}}
+                <div>
+                    <button @click="handleClick">详情</button>
+                </div>
+            </div>
+            `,
+            methods: {
+                handleClick() {
+                    console.log(this.mydata.synopsis)
+                    this.$emit("event", this.mydata.synopsis)
+                }
+            }
+        })
+        Vue.component("filmDetail", {
+            props: ["myfilmdata"],
+            template: `
+                <div class="itemInfo">
+                    {{myfilmdata}}
+                </div>
+            `
+        })
+        new Vue({
+            el: "#box",
+            data: {
+                datalist: [],
+                filmdata: ""
+            },
+            //真实dom节点创建好就发ajax请求，一打开网站页面就有内容
+            mounted() {
+                fetch("json/maizuo.json")
+                    .then(res => res.json())
+                    .then(res => {
+                        // console.log(res.data.films)
+                        this.datalist = res.data.films
+                    })
+            },
+            methods: {
+                handleAjax() {
+                    //改为mounted
+
+                    // fetch("json/maizuo.json")
+                    //     .then(res => res.json())
+                    //     .then(res => {
+                    //         // console.log(res.data.films)
+                    //         this.datalist = res.data.films
+                    //     })
+                },
+                handleEvent(data) {
+                    console.log("父组件定义的事件", data)
+                    this.filmdata = data//data是临时变量，要用状态
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

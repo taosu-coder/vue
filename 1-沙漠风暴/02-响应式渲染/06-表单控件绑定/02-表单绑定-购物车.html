@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.next.js"></script>
+    <style>
+        li {
+            display: flex;
+            padding: 10px;
+            justify-content: space-around;
+        }
+
+        li img {
+            width: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div v-show="dataList.length">
+            <input type="checkbox" v-model="isAll" @change="handleAllChecked">全选/全不选
+        </div>
+        <ul>
+            <li v-for="(item,index) in dataList" :key="item.id" @change="handleItemChecked">
+                <input type="checkbox" v-model="checkList" :value="item">
+                <img :src="item.pic" alt="">
+                <div>
+                    <div>{{item.name}}</div>
+                    <div style="color:red">￥{{item.price}}</div>
+                </div>
+                <div>
+                    <button @click="item.number--" :disabled="item.number===1">-</button>
+                    <span>{{item.number}}</span>
+                    <button @click="item.number++" :disabled="item.number===item.limit">+</button>
+                </div>
+                <div>
+                    <button @click="handleDeleteClick(index,item.id)">删除</button>
+                </div>
+            </li>
+        </ul>
+
+        <div v-show="dataList.length">
+            <div>总金额：{{sum()}}</div>
+            {{checkList}}
+        </div>
+
+        <div v-show="!dataList.length">购物车空空如也</div>
+
+    </div>
+    <script>
+        var obj = {
+            data() {
+                return {
+                    isAll: false,
+                    checkList: [],//选中商品的数据 
+                    dataList: [
+                        {
+                            name: "商品1",
+                            price: 10,
+                            number: 1,
+                            id: 1,
+                            limit: 5, //限购
+                            pic: "https://static.maizuo.com/pc/v5/usr/movie/44dc08914d508fc47c8267c6ca73f2d8.jpg"
+                        },
+                        {
+                            name: "商品2",
+                            price: 20,
+                            number: 2,
+                            id: 2,
+                            limit: 10, //限购
+                            pic: "https://static.maizuo.com/pc/v5/usr/movie/44dc08914d508fc47c8267c6ca73f2d8.jpg"
+                        },
+                        {
+                            name: "商品3",
+                            price: 30,
+                            number: 3,
+                            id: 3,
+                            limit: 15, //限购
+                            pic: "https://static.maizuo.com/pc/v5/usr/movie/44dc08914d508fc47c8267c6ca73f2d8.jpg"
+                        }
+                    ]
+                }
+            },
+            methods: {
+                //累加计算 checkList数组的每一项 价格*数量
+                sum() {
+                    var total = 0
+                    this.checkList.forEach(item => {
+                        total += item.number * item.price
+                    })
+                    return total
+                },
+
+                //删除
+                handleDeleteClick(index, id) {
+                    console.log(index)
+                    this.dataList.splice(index, 1)//删除对应的商品只是从dataList中删除 靠index
+                    this.checkList = this.checkList.filter(item => item.id !== id)// 删除checkList 靠id 过滤掉删除的id对应的商品传到新数组
+
+                    //同步一下状态
+                    this.handleItemChecked()
+                },
+
+                handleAllChecked() {
+                    //全选
+                    if (this.isAll) {
+                        this.checkList = this.dataList
+                    } else {
+                        //全不选
+                        this.checkList = []
+                    }
+                },
+
+                //选择每项
+                handleItemChecked() {
+                    if (this.checkList.length === this.dataList.length) {
+                        console.log("全选")
+                        this.isAll = true
+                    } else {
+                        console.log("未全选")
+                        this.isAll = false
+                    }
+                }
+            }
+        }
+        Vue.createApp(obj).mount("#box")
+
+    </script>
+</body>
+
+</html>

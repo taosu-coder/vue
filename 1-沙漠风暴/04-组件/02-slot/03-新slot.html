@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <child>
+            <template v-slot:a>
+                <div>taosu111</div>
+            </template>
+            <template #b>
+                <div>taosu222</div>
+            </template>
+
+            <div>zhuozhuo3</div>
+
+        </child>
+
+        <navbar>
+            <template v-slot:left>
+                <button>aaa</button>
+            </template>
+            <template #right>
+                <i class="iconfont icon-all">图标</i>
+            </template>
+        </navbar>
+    </div>
+    <script>
+        Vue.component("navbar", {
+            template: `<div>
+                <slot name="left"></slot>
+                <span>navbar</span>
+                <slot name="right"></slot>
+                `
+        })
+        Vue.component("child", {
+            template: `<div>
+                <slot name="a"></slot>
+                <slot name="b"></slot>
+                <slot></slot>
+                </div>`
+        })
+        new Vue({
+            el: "#box",
+        })
+
+        //新版slot的写法：在标签上的写法改变
+        //用<template>包起来，用v-slot：a或简写#a
+        //单个插槽可以直接用，不用<template>包起来
+    </script>
+</body>
+
+</html>

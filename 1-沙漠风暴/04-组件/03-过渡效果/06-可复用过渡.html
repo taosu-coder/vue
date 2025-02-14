@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        .right {
+            position: fixed;
+            top: 0px;
+            right: 0px;
+        }
+
+        .left {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+        }
+
+        .right-enter-active {
+            animation: bbb 1.5s;
+        }
+
+        .right-leave-active {
+            animation: bbb 1.5s reverse;
+        }
+
+        .left-enter-active {
+            animation: aaa 1.5s;
+        }
+
+        .left-leave-active {
+            animation: aaa 1.5s reverse;
+        }
+
+        @keyframes aaa {
+            0% {
+                opacity: 0;
+                transform: translateX(-100%)
+                    /*相对于自己*/
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0px)
+            }
+        }
+
+        @keyframes bbb {
+            0% {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0px);
+            }
+        }
+    </style>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <!-- 改1-04-01-02-3抽屉 -->
+    <div id="box">
+        <navbar @myevent="handleEvent"></navbar>
+        <sidebar v-show="isShow" mode="right"></sidebar>
+
+    </div>
+    <script>
+        Vue.component("navbar", {
+            template: `
+            <div style="background:skyblue">
+            <button @click="handleClick()">侧边栏</button>
+            导航栏--
+            </div>
+        `,
+            methods: {
+                handleClick() {
+                    //$emit触发，固定用法，子组件触发父组件事件，父组件处理事件（把isShow取反）
+                    this.$emit("myevent", "可以传实参,因为handleEvent没加(),所以也可以data接收到")
+                }
+            }
+        })
+        Vue.component("sidebar", {
+            props: ["mode"],
+            template: ` 
+            <transition :name="mode">
+            <ul style="background:pink;width:200px;height:500px;" :class="mode">
+            <li>钱包--{{mode}}</li>
+            <li>首页</li>
+            <li>设置</li>
+        </ul>
+        </transition>
+        `
+        })
+        new Vue({
+            el: "#box",
+            data: {
+                isShow: true
+            },
+            methods: {
+                handleEvent(data) {
+                    console.log("父组件的事件", data)
+                    //子组件触发父组件事件，isShow取反
+                    this.isShow = !this.isShow
+                }
+            }
+        })
+
+        //可复用过渡就是做成组件
+        //用mode加自定义名字和样式，在节点上、组件上、class都接收mode属性值
+    </script>
+</body>
+
+</html>

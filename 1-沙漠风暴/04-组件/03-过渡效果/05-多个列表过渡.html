@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .tao-enter-active {
+            animation: aaa 1.5s;
+        }
+
+        .tao-leave-active {
+            animation: aaa 1.5s reverse;
+        }
+
+        @keyframes aaa {
+            0% {
+                opacity: 0;
+                transform: translateX(100px)
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0px)
+            }
+        }
+    </style>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <!-- 改1-02-01-02todolist -->
+    <div id="box">
+        <!-- v-model双向绑定了一个输入框的value -->
+        <input type="text" v-model="mytext">
+        <button @click="handleAdd()">add</button>
+        <!-- <ul v-show="datalist.length"> -->
+        <transition-group name="tao" tag="ul" v-show="datalist.length">
+            <li v-for="(data,index) in datalist" :key="data">
+                {{data}}
+                <button @click="handleDel(index)">del</button>
+            </li>
+        </transition-group>
+        <!-- </ul> -->
+        <div v-show="!datalist.length">待办事项空空如也</div>
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                datalist: ["111", "222", "333"],
+                mytext: "aaa",
+            },
+            methods: {
+                handleAdd() {
+                    this.datalist.push(this.mytext)
+                    //清空输入框
+                    this.mytext = ""
+                },
+                handleDel(index) {
+                    console.log("del", index)
+                    this.datalist.splice(index, 1)//splice删除数组方法
+                }
+            }
+        })
+
+        // <transition>与 <transition-group>的区别：
+        //<transition>只能包一个节点，<transition-group>可以包多个，但要有key值
+        //<transition-group>会实例化成一个<span>标签包住节点，也可以自定义实例化节点，tag=div或ul等，上面案例用ul就可以把原本的dom节点ul删除
+    </script>
+</body>
+
+</html>

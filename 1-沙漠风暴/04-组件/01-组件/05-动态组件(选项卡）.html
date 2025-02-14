@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        footer ul {
+            display: flex;
+            list-style: none;
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            height: 40px;
+            width: 100%;
+        }
+
+        footer ul li {
+            flex: 1;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: pink;
+            color: black;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <!-- <home v-show="which==='home'"></home>
+        <list v-show="which==='list'"></list>
+        <shopcar v-show="which==='shopcar'"></shopcar> -->
+
+        <keep-alive>
+            <!-- <component is="home"></component> -->
+            <component :is="which"></component>
+        </keep-alive>
+        <footer>
+            <ul>
+                <li @click="which='home'">home</li>
+                <li @click="which='list'">列表</li>
+                <li @click="which='shopcar'">购物车</li>
+            </ul>
+        </footer>
+    </div>
+    <script>
+        Vue.component("home", {
+            template: `
+            <div>home
+            <input type="text">
+            </div>`
+        })
+        Vue.component("list", {
+            template: `
+            <div>list</div>`
+        })
+        Vue.component("shopcar", {
+            template: `
+            <div>shopcar</div>`
+        })
+        new Vue({
+            el: "#box",
+            data: {
+                which: "home"
+            },
+        })
+
+        //动态组件：<component></component>
+        //有个is属性，is="home",is+组件名就会变成任意组件，绑定变量就要加：如:is="which"
+        //动态组件的缺点：动态组件不会复用，组件之间切换是直接删除组件再创建新的组件。比如：home中的input输入aaa后点list跳转，再返回home，input的内容就会消失。如果想保留input的内容（即让之前的组件存活）就要把<component>放在<keep-alive>里
+        //<keep-alive>的原理是将数据存在内存中，加载回来时临时从内存读取回来
+        //<component>和<keep-alive>都是内置组件
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        .item {
+            overflow: hidden;
+            width: 300px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        .item img {
+            width: 100px;
+            float: left;
+        }
+
+        .itemInfo {
+            position: fixed;
+            width: 300px;
+            min-height: 200px;
+            top: 100px;
+            right: 50px;
+            background-color: pink;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <button @click="handleAjax">ajax</button>
+        <film-item v-for="item in datalist" :key="item.filmId" :mydata="item"></film-item>
+        <film-detail></film-detail>
+    </div>
+    <script>
+        var bus = new Vue()
+        //bus中央事件总线，
+        // 这里filmItem是发布者bus.$emit，filmDetail是订阅者
+
+        //注意：html里标签用-的话<film-item>，js里就要用驼峰filmItem
+        Vue.component("filmItem", {
+            props: ["mydata"],
+            template: `
+            <div class="item">
+                <img :src="mydata.poster">
+                {{mydata.name}}
+                <div>
+                    <button @click="handleClick">详情</button>
+                </div>
+            </div>
+            `,
+            methods: {
+                handleClick() {
+                    // console.log(this.mydata.synopsis)
+                    bus.$emit("taosu", this.mydata.synopsis)
+                }
+            }
+        })
+        Vue.component("filmDetail", {
+            //组件创建好，就立刻订阅
+            data() {
+                return {
+                    info: ""
+                }
+            },
+            //生命周期
+            mounted(data) {
+                bus.$on("taosu", (data) => {
+                    // console.log(data)
+                    this.info = data//data是临时变量，要用状态才能在页面显示
+                })
+            },
+            template: `
+                <div class="itemInfo">
+                    {{info}}
+                </div>
+            `
+        })
+        new Vue({
+            el: "#box",
+            data: {
+                datalist: [],
+            },
+            methods: {
+                handleAjax() {
+                    fetch("json/maizuo.json")
+                        .then(res => res.json())
+                        .then(res => {
+                            // console.log(res.data.films)
+                            this.datalist = res.data.films
+                        })
+                },
+
+            }
+        })
+    </script>
+</body>
+
+</html>

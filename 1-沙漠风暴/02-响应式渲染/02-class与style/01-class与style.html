@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js "></script>
+    <style>
+        .aa {}
+
+        .bb {}
+
+        .cc {}
+
+        .dd {}
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <div :class="classobj">动态切换class-1-对象</div>
+        <div :class="classarr">动态切换class-2-数组</div>
+        <div :style="styleobj">动态切换style-1-对象</div>
+        <div :style="stylearr">动态切换style-2-数组</div>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#box",
+            data: {
+                classobj: {
+                    aa: true,
+                    bb: true,
+                    cc: false,
+                },
+                classarr: ["aaa", "bbb"],
+                styleobj: {
+                    backgroundColor: "skyblue"
+                },
+                stylearr: [{ backgroundColor: "pink" }]
+            }
+        })
+
+        //vue2的bug:无法监听临时新增的/删除属性和数组元素
+        //vue2解决方法：
+        // 1、对象：Vue.set(对象，增加的属性，属性值)
+        // 2、数组：vm.classarr.push()、vm.classarr.splice(1,1)、vm.classarr.shift(),vm.classarr=[]
+
+        //vue3不用解决，vue3支持动态增加属性的拦截
+    </script>
+</body>
+
+</html>

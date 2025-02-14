@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <!-- myright要加：，不加：就是普通字符串，加：才是js的地盘，即true和false才会是布尔值，若赋值aaa才会是一个变量aaa -->
+        <div style="background:pink">根组件标题</div>
+        <navbar myname="电影" :myright="false" :myparent="parent"></navbar>
+        <!-- <navbar myname="影院" :myright="true"></navbar> -->
+        <navbar myname="影院"></navbar>
+    </div>
+    <script>
+        Vue.component("navbar", {
+            // props: ["myname", "myright"],//接收属性，this.myname就可以用
+            // props:{
+            //     myname:String,
+            //     myright:Boolean
+            // },//既接收数据，又对属性进行校验：属性验证
+
+            //最终props版本：接受属性+属性验证+默认属性(不传即默认)
+            props: {
+                myname: {
+                    type: String,
+                    default: ""
+                },
+                myright: {
+                    type: Boolean,
+                    default: true
+                },
+                myparent: {
+                    type: String,
+                    default: ""
+                }
+            },
+            template: `<div>
+                <button>left</button>
+                <span>{{myname}}--{{myparent}}</span>
+                <button v-show="myright">right</button>
+                `
+        })
+        new Vue({
+            el: "#box",
+            data: {
+                parent: "taosuzuikeai"
+            }
+        })
+
+        //new vue就是一个根组件，上面模板就是根组件new vue的模板。页面中只有一个new vue根组件和navbar两个组件，所以navbar的根组件就是new vue，即new vue的子组件就是navbar
+        //父组件传参数（myname，myright）给孩子组件，子组件用props接收并使用
+
+        //父传子：父通过属性传，子通过props接收并使用；间接传；为了复用
+        //子传父：子通过事件传，子触发父组件的事件（父组件定义好处理事件）；间接传；为了业务需要
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        #overlay {
+            background-color: rgb(0, 0, 0, 0.6);
+            width: 100%;
+            position: fixed;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        #center {
+            background-color: aliceblue;
+            height: 160px;
+            width: 290px;
+            border-radius: 5px;
+            padding-left: 20px;
+            padding-top: 30px;
+            padding-bottom: 15px;
+            position: fixed;
+            margin: auto;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 模态框，解决点center输入框就消失的问题，冒泡问题 -->
+    <!-- 方法1：.stop  <div id="center" @click.stop></div> -->
+    <!-- 方法2：.self  <div id="overlay" v-show="isShow" @click.self="isShow=false"></div> -->
+    <div id="box">
+        <button @click="isShow=true">show</button>
+        <div id="overlay" v-show="isShow" @click.self="isShow=false">
+            <!-- <div id="center" @click.stop> -->
+            <div id="center">
+                <div>用户名：<input type="text"></div>
+                <div>密码：<input type="text"></div>
+                <div><button>登录</button></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                isShow: false,
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+
+</html>

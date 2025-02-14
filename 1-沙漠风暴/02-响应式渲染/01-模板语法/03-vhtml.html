@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        {{mytext}}
+        <!-- v-html 会将html代码解析渲染到页面上 -->
+        <div v-html="mytext"></div>
+        <div v-html="myhtml"></div>
+
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                mytext: "<b>加粗的</b>",
+                myhtml: `<div class="top-rated">
+  <p class="title">最受好评电影</p>
+  <div class="top-rated-list">
+    <div class="top-rated-item" data-id=1299372 >
+        <div class="poster default-img-bg">
+          <img src=https://p0.meituan.net/170.230/movie/48774506dc0e68805bc25d2cd087d1024316392.jpg  onerror="this.style.visibility='hidden'">
+          <span class="wish-bg"></span>
+            <span class="score">观众评分&nbsp;&nbsp;<span class="rated-score">9.5</span></span>
+        </div>
+        <h5 class="name line-ellipsis">你好，李焕英</h5>
+    </div>
+    <div class="top-rated-item" data-id=1300936 >
+        <div class="poster default-img-bg">
+          <img src=https://p0.meituan.net/170.230/movie/8a1ad4ec0d81f240e4d8c2d1b10c2ec53475644.jpg  onerror="this.style.visibility='hidden'">
+          <span class="wish-bg"></span>
+            <span class="score">观众评分&nbsp;&nbsp;<span class="rated-score">9.1</span></span>
+        </div>
+        <h5 class="name line-ellipsis">人潮汹涌</h5>
+    </div>
+    <div class="top-rated-item" data-id=1222234 >
+        <div class="poster default-img-bg">
+          <img src=https://p0.meituan.net/170.230/movie/e2ecb7beb8dadc9f07f2fad9820459f92275588.jpg  onerror="this.style.visibility='hidden'">
+          <span class="wish-bg"></span>
+            <span class="score">观众评分&nbsp;&nbsp;<span class="rated-score">9</span></span>
+        </div>
+        <h5 class="name line-ellipsis">我的姐姐</h5>
+    </div>`
+            }
+        })
+    </script>
+</body>
+
+</html>

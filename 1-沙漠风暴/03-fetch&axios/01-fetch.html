@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <button @click="handelFetch">ajax-fetch</button>
+        <ul>
+            <li v-for="data in datalist"></li>
+        </ul>
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                datalist: ""
+            },
+            methods: {
+                handelFetch() {
+                    //get请求
+                    // fetch("http://127.0.0.1:5500/1-%E6%B2%99%E6%BC%A0%E9%A3%8E%E6%9A%B4/03-fetch&axios/json/test.json")
+                    //同域名同端口号可以省略前面的
+                    fetch("json/test.json")
+                        .then(res => res.json())
+                        .then(res => { console.log(res) })
+                        .catch(err => { console.log(err) })
+
+                    //post请求，两种数据类型x-www-form-urlencoded和json
+                    // headers规定数据类型，body传参数，get只有一种传参方法url?拼接
+                    //post-1
+                    // fetch("路径", {
+                    //     method: "post",
+                    //     headers: { "content-type": "application/x-www-form-urlencoded" },
+                    //     body: "name:hh&gage=18"
+                    // })
+                    //     .then(res => res.json())
+                    //     .then(res => { console.log(res) })
+
+                    //post-2
+                    // fetch("路径", {
+                    //     method: "post",
+                    //     headers: { "content-type": "application/json" },
+                    //     body: JSON.stringify({
+                    //         name: "hh",
+                    //         age: 100
+                    //     })
+                    // })
+                    //     .then(res => res.json())
+                    //     .then(res => { console.log(res) })
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

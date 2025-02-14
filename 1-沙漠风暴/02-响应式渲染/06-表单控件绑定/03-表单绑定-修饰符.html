@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>ksd
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <input type="text" v-model.lazy="mytext">
+        {{mytext}}
+
+        <!-- <input type="number" v-model.number="myage"> -->
+        <!-- .number与type="text"搭配，能够把数字过滤出来，但一开始就不是数字就不好用了 -->
+        <input type="text" v-model.number="myage">
+
+        <input type="text" v-model.trim="myusername">
+
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#box",
+            data: {
+                mytext: "",
+                myage: 0,
+                myusername: ""
+            }
+        })
+
+        //表单修饰符：
+        //1、.lazy 失去焦点同步一次
+        //2、.number 格式化数字
+        //3、.trim 去除首尾空格
+    </script>
+</body>
+
+</html>

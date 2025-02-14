@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <div v-hello>taosu</div>
+        <div v-hello="'pink'">11111</div>
+        <div v-hello="'skyblue'">11111</div>
+        <div v-hello="whichColor">11111</div>
+    </div>
+    <script>
+        Vue.directive("hello", {
+            //inserted指令的生命周期函数，拿到实例的底层dom节点进行操作
+            inserted(el, binding) {//el节点，binding节点对象
+                console.log("inserted", el, binding)
+                // el.style.background = "red"
+                el.style.background = binding.value
+            },
+            //指令更新生命周期，update，没有d！！
+            update(el, binding) {
+                console.log("update")
+                el.style.background = binding.value
+            }
+        })
+        var vm = new Vue({
+            el: "#box",
+            data: {
+                whichColor: "green"
+            }
+        })
+
+        //指令directive：对普通dom节点进行底层操作
+        //指令的生命周期与组件的生命周期是平级的，应对不同方案；组件：为了复用整段的dom、js、css逻辑，指令：只为了回去底层dom节点
+        //inserted只在第一次插入父节点中触发，后面有更新要放在update中，指令的更新生命周期！！没有d!!  控制台vm.whichColor改颜色
+
+        //vue2和vue3指令生命周期不同，03有解释
+    </script>
+</body>
+
+</html>

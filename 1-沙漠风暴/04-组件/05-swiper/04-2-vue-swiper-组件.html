@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <script src="swiper/swiper/swiper-bundle.js"></script>
+    <link rel="stylesheet" href="swiper/swiper/swiper-bundle.css">
+    <script src="module/vueswiper.js"></script>
+    <style>
+        .swiper-wrapper {
+            min-height: 100px;
+        }
+
+        .swiper img {
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="box">
+        <!-- <swiper :key="datalist.length"> -->
+        <swiper v-if="datalist.length" :loop="false">
+            <swiper-item v-for="data in datalist" :key="data">
+                <img :src="data">
+            </swiper-item>
+
+        </swiper>
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                datalist: [],
+            },
+            mounted() {
+                setTimeout(() => {
+                    this.datalist = ["https://pic.maizuo.com/usr/movie/4c2f1672aa45f853e84e8d0f31b46a05.jpg", "https://pic.maizuo.com/usr/movie/6f6a1eaa1cd0123cfaf03c0a1b2e7938.jpg", "https://pic.maizuo.com/usr/movie/3495b5706cb0f7cd4545ba1c441e190d.jpg"]
+                }, 2000)
+            }
+        })
+        //将组件放到js文件中，需要用就引入
+        //个性化需求,如loop
+        //父子通信（属性传）实现组件传值实现个性化：父通过属性传，子接收属性并验证和属性默认值设置
+    </script>
+</body>
+
+</html>

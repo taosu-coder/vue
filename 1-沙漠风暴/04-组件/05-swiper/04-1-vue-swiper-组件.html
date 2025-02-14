@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <script src="swiper/swiper/swiper-bundle.js"></script>
+    <link rel="stylesheet" href="swiper/swiper/swiper-bundle.css">
+    <style>
+        .swiper-wrapper {
+            min-height: 100px;
+        }
+
+        .swiper img {
+            height: 600px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <!-- <swiper :key="datalist.length"> -->
+        <swiper v-if="datalist.length">
+            <swiper-item v-for="data in datalist" :key="data">
+                <img :src="data">
+            </swiper-item>
+
+        </swiper>
+    </div>
+    <script>
+        Vue.component("swiperItem", {
+            template: `
+            <div class="swiper-slide">
+                <slot></slot>
+            </div>
+            `
+        })
+        Vue.component("swiper", {
+            template: `
+        <div class="swiper taosu">
+            <div class="swiper-wrapper">
+               <slot></slot>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>`,
+            mounted() {
+                console.log("mounted")
+                new Swiper(".swiper", {
+                    // direction: 'vertical', // 垂直切换选项
+                    // loop: true, // 循环模式选项
+
+                    // 如果需要分页器
+                    pagination: {
+                        el: '.swiper-pagination',
+                    },
+                })
+            },
+            destroyed() {
+                console.log("destroyed")
+            }
+        })
+
+        new Vue({
+            el: "#box",
+            data: {
+                datalist: [],
+            },
+            mounted() {
+                setTimeout(() => {
+                    this.datalist = ["https://pic.maizuo.com/usr/movie/4c2f1672aa45f853e84e8d0f31b46a05.jpg", "https://pic.maizuo.com/usr/movie/6f6a1eaa1cd0123cfaf03c0a1b2e7938.jpg", "https://pic.maizuo.com/usr/movie/3495b5706cb0f7cd4545ba1c441e190d.jpg"]
+                }, 2000)
+            }
+        })
+        //将swiper做成组件，可复用
+        //异步情况下，把new swiper放在生命周期mounted中只会执行一次，第一次数据为空，之后更新数据只会走updatd，放在生命周期updated的问题是如果传新的属性，new swiper会执行多次
+        //解决方法：还是放在mounted最保险
+        //1、给封装组件swiper加:key="datalist.length"  //ai给出改进点：移除 :key="datalist.length"：不再强制重新渲染 <swiper> 组件，而是通过 watch 监听 datalist 的变化。
+        //2、给swiper加v-if
+
+        //加:key="datalist.length"就解决问题的原理：一开始swiper刚创建时没有数据，datalist.length=0（key值=0），数据娶回来后datalist.length=3（key=3），两个swiper的key值不一样，通过diff算法，旧的swiper会删除并创建新的swiper节点，mounted就会重新执行一次。每一个组件mounted只执行一次
+    </script>
+</body>
+
+</html>

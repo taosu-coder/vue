@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <style>
+        .tao-enter-active {
+            animation: aaa 1.5s;
+        }
+
+        .tao-leave-active {
+            animation: aaa 1.5s reverse;
+        }
+
+        @keyframes aaa {
+            0% {
+                opacity: 0;
+                transform: translateX(100px)
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateX(0px)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <button @click="isShow=!isShow">change</button>
+        <transition name="tao" mode="out-in">
+            <div v-if="isShow" key="1">zhuo111</div>
+            <div v-else key="2">zhuo222</div>
+        </transition>
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                isShow: true
+            }
+        })
+
+        // 多个过渡进出动画设置mode="out-in"/mode="in-out"
+
+        //面试题：底层更新原理、数据驱动原理、模板更新原理、虚拟dom怎么优化性能、diff算法是什么、diff算法怎么理解、diff算法的原理、diff算法怎么优化性能（diff与虚拟dom相关的）
+        //答：vue2中通过object.defineProperty的get、set拦截，vue3中通过proxy方案进行拦截，拦截到数据发生改变时通过vue中的watcher观察者通知所有跟这个节点相关的dom、组件重新渲染，在渲染时会重新创建一份虚拟dom节点，本质上是对象，对比老的虚拟dom节点，在对比过程中vue有一套内置的diff算法保证最优的效率对比、最小的代价更新dom。diff算法的三大原则：1、同层级对比：同层级对比，不同层级不对比；2、同key值对比：key值一样复用，key值不一样则删除之前的重新创建；3、同组件对比：新的老的组件名/标签不一样就直接删了重新创建。
+    </script>
+</body>
+
+</html>

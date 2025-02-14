@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <!-- 普通文本框或多行文本框 -->
+        {{atext}}
+        <textarea name="" id="" v-model="atext"></textarea>
+
+        <div>
+            <!-- 单个多选框应用场景：登录页面中，是否记住用户名；勾选：将用户名value值存到localStorage中，不勾选：post到后端进行表单校验 -->
+            <h3>登录页面</h3>
+            <div>用户名：<input type="text" v-model="mytext"></div>
+            <input type="checkbox" v-model="isRemeber">记住用户名
+            <button @click="handleLogin">登录</button>
+        </div>
+
+        <div>
+            <!-- 多个多选框应用场景：注册页面中，选择兴趣爱好 -->
+            <h3>注册页面-兴趣爱好</h3>
+            <input type="checkbox" v-model="checkList" value="vue">Vue
+            <input type="checkbox" v-model="checkList" value="react">react
+            <input type="checkbox" v-model="checkList" value="wx">小程序
+            <div>{{checkList}}</div>
+        </div>
+
+        <div>
+            <!-- 单选框应用场景：二选一或多选一 -->
+            <input type="radio" v-model="select" value="a">男
+            <input type="radio" v-model="select" value="b">女
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                atext: "",
+                mytext: localStorage.getItem("username"),
+                isRemeber: false,
+                checkList: [],
+                select: "a"
+            },
+            methods: {
+                handleLogin() {
+                    if (this.isRemeber) {
+                        console.log("保存")
+                        localStorage.setItem("username", this.mytext)
+                    }
+                    console.log(this.mytext, this.checkList, this.select)
+                }
+            }
+        })
+
+        //v-model 双向数据绑定
+        //vue在富表单（大量表单）开发种，会节省大量时间，不用获取dom结构、节点内容再.value .check，只需要v-model双向绑定
+        //1、对于普通文本输入框text、多行文本输入框<textarea> 绑普通字符串
+        //2、对于单个多选框checkbox 绑布尔值
+        //3、对于多个多选框 绑数组
+        //4、对于单选框radio 绑字符串
+
+        //原生dom方法：
+        //要获取节点，获得.check的值
+
+        //面试题：vue属于以下哪种框架（架构模式）
+        //mvc mvvm  mvvm的特性就是双向数据绑定
+        //m：model层  v:view层  c:controller层  vm:view model层
+    </script>
+</body>
+
+</html>

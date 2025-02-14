@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <child>
+            <div slot="a">tao1111</div>
+            <div slot="b">tao2222</div>
+            <div slot="c">tao3333</div>
+            <div slot="a">tao4444</div>
+            <div>tao555</div>
+            <div>tao666</div>
+        </child>
+
+        <navbar>
+            <button slot="left">aaa</button>
+            <i class="iconfont icon-all" slot="right">字体图标</i>
+        </navbar>
+    </div>
+    <script>
+        //用插槽实现自定义navbar，想放button和icon都可以，只有匹配上slot名字
+        Vue.component("navbar", {
+            template: `<div>
+            <slot name="left"></slot>
+            <span>navbar</span>
+            <slot name="right"></slot>
+            </div>
+            `
+        })
+        Vue.component("child", {
+            template: `<div>
+                child
+                <slot name="a"></slot>
+                <slot name="b"></slot>
+                <slot name="c"></slot>
+                <slot></slot>
+                <slot></slot>
+                </div>`
+        })
+        new Vue({
+            el: "#box"
+        })
+
+        //单个插槽：<slot></slot>
+        //具名插槽：<slot name="a"></slot>
+        //插槽的意义：拓展组件能力，提高组件复用性
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        {{count}}
+        <button @click="handleAdd1()">add-函数表达式</button>
+        <button @click="handleAdd2">add-函数名</button>
+        <button @click="handleAdd3($event,1,2,3)">add-函数表达式</button>
+
+        <!-- 2应用：不用v-model获取input的value -->
+        <input type="text" @input="handleInput">
+        <!-- <ul @click.self="handleUlClick"> -->
+        <ul @click="handleUlClick">
+            <li @click.stop="handleLiClick">11111</li>
+            <li @click="handleLiClick">22222</li>
+            <li @click.once="handleLiClick">33333</li>
+        </ul>
+        <a href="http://www.baidu.com" @click.prevent>跳转</a>
+
+        <!-- <input type="text" @keyup="handleKeyUp"> -->
+        <input type="text" @keyup.enter="handleKeyUp">
+        <!-- 按键修饰符，绑在按键上的，这里表示按下enter键就触发handleKeyUp -->
+    </div>
+    <script>
+        new Vue({
+            el: "#box",
+            data: {
+                count: 0
+            },
+            methods: {
+                handleAdd1() {
+                    this.count++
+                },
+                handleAdd2(evt) {
+                    this.count++
+                    console.log(evt.target)
+                },
+                handleAdd3(evt, a, b, c) {
+                    this.count++
+                    console.log(evt.target, a, b, c)
+                },
+                handleInput(evt) {
+                    console.log("input", evt.target.value)
+                },
+                handleLiClick(evt) {
+                    console.log("li")
+                    // evt.stopPropagation()操作原生dom阻止冒泡
+                },
+                handleUlClick(evt) {
+                    console.log("ul")
+                },
+                handleKeyUp(evt) {
+                    // console.log("keyup", evt.keyCode)
+                    // if (evt.keyCode === 13) {
+                    //     console.log("li add", evt.target.value)
+                    // }
+
+                    console.log("li add", evt.target.value)
+
+                }
+
+            }
+        })
+
+        //绑定事件的3种写法：3万能
+        //1、@click="handleAdd1()"，加()，可以自定义传实参
+        //2、@click="handleAdd2"，不加()，不传参，会获取一个形参evt事件对象，就可以获得target事件源
+        //3、@click="handleAdd3($event,1,2,3)"，既可以传实参，又可以获取事件对象
+
+        //事件修饰符：
+        //1、.stop 用在li上 表示此函数事件触发后并阻止冒泡
+        //2、.self 用在ul上 表示孩子节点冒泡上来的就阻止冒泡
+        //3、.once 只触发一次
+        //4、.prevent 阻止默认行为
+
+        //按键修饰符：
+        //绑在按键上.enter .esc .up .down .left .right .space .ctrl .shift .delete
+        //可以组合用@keyup.shift.ctrl="handleKeyUp"  表示要shift+ctrl一起按才触发
+        //还可以用键值，例如enter的键值(keyCode)为13，@keyup.13="handleKeyUp"
+    </script>
+</body>
+
+</html>

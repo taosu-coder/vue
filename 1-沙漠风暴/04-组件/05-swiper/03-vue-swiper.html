@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.js"></script>
+    <script src="swiper/swiper/swiper-bundle.js"></script>
+    <link rel="stylesheet" href="swiper/swiper/swiper-bundle.css">
+    <style>
+        .taosu {
+            height: 600px;
+        }
+
+        .taosu img {
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <header>导航---{{myname}}</header>
+        <div class="swiper taosu">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide" v-for="data in datalist" :key="data">
+                    <img :src="data" alt="">
+                </div>
+            </div>
+
+            <!-- 如果需要分页器 -->
+            <div class="swiper-pagination"></div>
+            <!-- 如果需要导航按钮 -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+        <footer>底部内容</footer>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#box",
+            data: {
+                datalist: [],
+                myname: "taosu"
+            },
+            mounted() {
+                setTimeout(() => {
+                    this.datalist = ["https://pic.maizuo.com/usr/movie/4c2f1672aa45f853e84e8d0f31b46a05.jpg", "https://pic.maizuo.com/usr/movie/6f6a1eaa1cd0123cfaf03c0a1b2e7938.jpg", "https://pic.maizuo.com/usr/movie/3495b5706cb0f7cd4545ba1c441e190d.jpg"]
+                }, 2000)
+                console.log("mounted时数据是否请求回来并创建节点", document.querySelectorAll(".swiper-slide").length)
+                //     new Swiper(".taosu", {
+                //         // direction: 'vertical', // 垂直切换选项
+                //         loop: true, // 循环模式选项
+
+                //         // 如果需要分页器
+                //         pagination: {
+                //             el: '.swiper-pagination',
+                //         },
+
+                //         //自动切换效果（自动轮播）
+                //         autoplay: {
+                //             delay: 2500,
+                //             disableOnInteraction: false,
+                //         },
+                //     })
+            },
+            updated() {
+                console.log("updated时数据是否请求回来并创建节点", document.querySelectorAll(".swiper-slide").length)
+                new Swiper(".taosu", {
+                    // direction: 'vertical', // 垂直切换选项
+                    loop: true, // 循环模式选项
+
+                    // 如果需要分页器
+                    pagination: {
+                        el: '.swiper-pagination',
+                    },
+                    // 如果需要前进后退按钮
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+
+                    //自动切换效果（自动轮播）
+                    autoplay: {
+                        delay: 2500,
+                        disableOnInteraction: false,
+                    },
+                })
+            },
+
+        })
+
+        ////因为异步setTimeout，会有swiper初始化过早的问题：swiper的dom节点创建出来了，但数据没有回来，所以解决方法：
+        // 1、原生js的方法是：封装new swiper，ajax请求数据回来后再调用
+        // 2、vue的方法：利用生命周期updated；注意：在mounted中new swiper也会过早（同步可用，异步不可用）并且mounted只会执行一次，请求回来也不会更新,所以要放在updated中
+        //vue方法的缺点：a、无法复用 ； b、如果当前页面不止一个datalist状态，别的状态有任何更新（比如myname在控制台修改），updated重新运行，new swiper会执行多次（出bug）
+    </script>
+</body>
+
+</html>

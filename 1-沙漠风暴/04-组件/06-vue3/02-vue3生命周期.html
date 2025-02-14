@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="lib/vue.next.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        {{myname}}
+        <navbar myname="zhuozhuo">
+            <div>111</div>
+        </navbar>
+        <sidebar></sidebar>
+    </div>
+    <script>
+        var obj = {
+            data() {
+                return {
+                    myname: "taosu"
+                }
+            },
+            methods: {
+
+            },
+            computed() {
+
+            },
+            created() {
+                console.log("created")
+            },
+            mounted() {
+                console.log("mounted")
+            },
+
+            //vue3最后2个生命周期名称替换  销毁
+            beforeUnmount() {
+                console.log("beforeUnmount")
+            },
+            unmounted() {
+
+            }
+
+
+        }
+
+        //写法二：
+        var app = Vue.createApp(obj)
+        app.component("navbar", {
+            props: ["myname"],
+            template: `
+            <div>
+                navbar--{{myname}}
+                <slot></slot>
+            </div>`
+        })
+        app.component("sidebar", {
+            template: `
+            <div>sidebar</div>
+            `
+        })
+        app.mount("#box")
+
+        //vue3的生命周期前6个一模一样，后2个名称替换
+        //beforeDestroy =>beforeUnmonte
+        //destroyed =>unmounted
+    </script>
+</body>
+
+</html>
